@@ -40,7 +40,7 @@ class GenericConfig(Config):
     GPU_COUNT = 1
 
     # Skip detections with < 90% confidence
-    DETECTION_MIN_CONFIDENCE = 0.751
+    DETECTION_MIN_CONFIDENCE = 0.7501
     IMAGE_MAX_DIM = 448
     IMAGE_MIN_DIM = 384
     # TRAIN_ROIS_PER_IMAGE = 20
