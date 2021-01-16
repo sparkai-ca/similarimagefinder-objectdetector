@@ -40,7 +40,7 @@ class GenericConfig(Config):
     GPU_COUNT = 1
 
     # Skip detections with < 90% confidence
-    DETECTION_MIN_CONFIDENCE = 0.7
+    DETECTION_MIN_CONFIDENCE = 0.751
     IMAGE_MAX_DIM = 448
     IMAGE_MIN_DIM = 384
     # TRAIN_ROIS_PER_IMAGE = 20
@@ -57,6 +57,7 @@ config = GenericConfig(81, 1)
 with tf.device("/cpu:0"):
     model = modellib.MaskRCNN(mode="inference", model_dir=MODEL_DIR, config=config)
 model.load_weights(weights_path, by_name=True)
+model.keras_model._make_predict_function()
 print("Weights loaded")
 
 
@@ -64,7 +65,7 @@ def predict(image_path):
 
     image = Image.open(image_path).convert('RGB')
     image = np.array(image)
-    results = model.detect([image], verbose=0)
+    results = model.detect([image], verbose=2)
 
     r = results[0]
 

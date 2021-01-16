@@ -28,7 +28,18 @@ var getAllImages = function(){
 }
 
 function detectObjects(image){
-    alert(image)
+    $.ajax({
+      url: "/detectObjects",
+      type: 'POST',
+      data: { 'image': image },
+      success: function(response){
+        _outerhtml_ = "<img class=responsive src='"+response['image']+"' />"
+        document.getElementById('i'+image.split('/').reverse()[0]).outerHTML = _outerhtml_
+      },
+      error: function(error){
+        alert('error on processing => '+image)
+      }
+   });
 }
 
 // displays images in modal
@@ -78,7 +89,7 @@ var displayResults = function(data){
   for(var i = 0; i < data.length; i++){
     var image = data[i].image;
     var score = data[i].score;
-    var element = "<div class=img-result> <button style='height:100%; width:100%;' id='"+imagePath+image+"' onclick='detectObjects(this.id)' > <div id='i"+image+"'> <img class=responsive src="+imagePath+image+"/> </div>  <div class=img-info>"+"<span class=image-name>IMAGE: "+image+"</span><span class=img-score>SCORE: "+score+"</span> </span><span class=img-name>Click on this image to Detect Objects!</span> </div> </button> </div>"
+    var element = "<div class=img-result> <button style='height:100%; width:100%;' id='"+imagePath+image+"' onclick='detectObjects(this.id)' > <div id='i"+image+"'> <img class=responsive src="+imagePath+image+"/> </div>  <div class=img-info>"+"<span style='color:blue;' class=image-name>IMAGE: "+image+"</span><span style='color:blue;' class=img-score>SCORE: "+score+"</span> </span><span style='color:red;' class=img-name>Click on this image to Detect Objects!</span> </div> </button> </div>"
     $("#results").append(element);
   }
 }

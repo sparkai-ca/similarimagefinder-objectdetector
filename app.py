@@ -69,15 +69,16 @@ def search():
             return jsonify({"sorry": "Sorry, no results! Please try again."}), 500
 
 
-@app.route('/object_detection', methods=['POST'])
+@app.route('/detectObjects', methods=['POST'])
 def object_detection():
     if request.method == 'POST':
         try:
             # Get image url
-            image_id = request.get('img')
+            image_id = str(request.form['image'])
+            print(image_id)
             predicted_image = predict(image_id)
-            plt.imsave('static/results/'+image_id, predicted_image)
-            return jsonify({"img": 'static/results/'+image_id})
+            plt.imsave('static/results/'+image_id.split('/')[-1], predicted_image)
+            return jsonify({"image": 'static/results/'+image_id.split('/')[-1]})
         except Exception as e:
             print(str(e))
             # return error
