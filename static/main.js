@@ -32,12 +32,18 @@ function detectObjects(image){
       url: "/detectObjects",
       type: 'POST',
       data: { 'image': image },
+      beforeSend: function(){
+        _html_ = '<img style="height:100%; width:100%;" src="static/loading.gif" />';
+        document.getElementById('i'+image.split('/').reverse()[0]).innerHTML = _html_;
+      },
       success: function(response){
-        _outerhtml_ = "<img class=responsive src='"+response['image']+"' />"
-        document.getElementById('i'+image.split('/').reverse()[0]).outerHTML = _outerhtml_
+        _html_ = "<img class=responsive src='"+response['image']+"' />";
+        document.getElementById('i'+image.split('/').reverse()[0]).innerHTML = _html_;
       },
       error: function(error){
         alert('error on processing => '+image)
+        _html_ = '<img style="height:100%; width:100%;" src="'+image+'" />'
+        document.getElementById('i'+image.split('/').reverse()[0]).innerHTML = _html_
       }
    });
 }
@@ -59,7 +65,7 @@ var imageSelectSearch = function(_this) {
   $("#modal").css("display", "none");
   $(".img-preview").attr("src", src);
   $("#results").html("");
-  $("#results").append("<div id=searching>Searching For Results...</div>");
+  $("#results").append("<div id=searching>  <img src='static/loading.gif' />  </div>");
 
   var image = src.split('/')[2];
   var imageName = image.split('.')[0];
