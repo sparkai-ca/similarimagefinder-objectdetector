@@ -27,6 +27,10 @@ var getAllImages = function(){
    });
 }
 
+function detectObjects(image){
+    alert(image)
+}
+
 // displays images in modal
 var displayModalImages = function(imgList){
 
@@ -49,7 +53,7 @@ var imageSelectSearch = function(_this) {
   var image = src.split('/')[2];
   var imageName = image.split('.')[0];
 
-  $("#preview-name").text('QUERY: '+imageName);
+  $("#preview-name").text('IMAGE: '+imageName);
 
   $.ajax({
     url: "/search",
@@ -74,7 +78,7 @@ var displayResults = function(data){
   for(var i = 0; i < data.length; i++){
     var image = data[i].image;
     var score = data[i].score;
-    var element = "<div class=img-result> <button id='"+imagePath+image+"' onclick='objectDetection(this.id)' > <img class=responsive src="+imagePath+image+"/>  <div class=img-info>"+"<span class=image-name>IMAGE: "+image+"</span><span class=img-score>SCORE: "+score+"</span> </span><span class=img-name>Click on this image to Detect Objects!</span> </div> </button> </div>"
+    var element = "<div class=img-result> <button style='height:100%; width:100%;' id='"+imagePath+image+"' onclick='detectObjects(this.id)' > <div id='i"+image+"'> <img class=responsive src="+imagePath+image+"/> </div>  <div class=img-info>"+"<span class=image-name>IMAGE: "+image+"</span><span class=img-score>SCORE: "+score+"</span> </span><span class=img-name>Click on this image to Detect Objects!</span> </div> </button> </div>"
     $("#results").append(element);
   }
 }

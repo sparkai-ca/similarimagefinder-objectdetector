@@ -74,10 +74,10 @@ def object_detection():
     if request.method == 'POST':
         try:
             # Get image url
-            image_id = request.form.get('img')
-            predicted_image = predict(os.path.join("images/", image_id))
-            plt.imsave(os.path.join("Results", image_id), predicted_image)
-            return jsonify(image=os.path.join("Results", image_id))
+            image_id = request.get('img')
+            predicted_image = predict(image_id)
+            plt.imsave('static/results/'+image_id, predicted_image)
+            return jsonify({"img": 'static/results/'+image_id})
         except Exception as e:
             print(str(e))
             # return error
