@@ -74,7 +74,7 @@ var displayResults = function(data){
   for(var i = 0; i < data.length; i++){
     var image = data[i].image;
     var score = data[i].score;
-    var element = "<div class=img-result><img class=responsive src="+imagePath+image+"/>  <div class=img-info>"+"<span class=image-name>IMAGE: "+image.split('.')[0]+"</span><span class=img-score>SCORE: "+score+"</span></div></div>"
+    var element = "<div class=img-result> <button id='"+imagePath+image+"' onclick='objectDetection(this.id)' > <img class=responsive src="+imagePath+image+"/>  <div class=img-info>"+"<span class=image-name>IMAGE: "+image+"</span><span class=img-score>SCORE: "+score+"</span> </span><span class=img-name>Click on this image to Detect Objects!</span> </div> </button> </div>"
     $("#results").append(element);
   }
 }

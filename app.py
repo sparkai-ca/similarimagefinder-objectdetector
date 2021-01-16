@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 # create flask instance
 app = Flask(__name__)
 
-INDEX = os.path.join(os.path.dirname(__file__), 'index.csv')
+INDEX = 'static/index.csv'
 
 
 # Main route
