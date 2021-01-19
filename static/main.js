@@ -27,6 +27,7 @@ var getAllImages = function(){
    });
 }
 
+// Detects objects on an image
 function detectObjects(image){
     $.ajax({
       url: "/detectObjects",
@@ -41,9 +42,9 @@ function detectObjects(image){
         document.getElementById('i'+image.split('/').reverse()[0]).innerHTML = _html_;
       },
       error: function(error){
-        alert('error on processing => '+image)
-        _html_ = '<img style="height:100%; width:100%;" src="'+image+'" />'
-        document.getElementById('i'+image.split('/').reverse()[0]).innerHTML = _html_
+        alert('May be Nothing Detected in this IMAGE !');
+        _html_ = '<img class=responsive src="'+image+'" />';
+        document.getElementById('i'+image.split('/').reverse()[0]).innerHTML = _html_;
       }
    });
 }

@@ -3,8 +3,11 @@ import cv2
 from flask import Flask, render_template, request, jsonify
 from searchengine.colordescriptor import DescriptorOfColors
 from searchengine.searcher import ImageSearcher
-from predict import predict
+from objectDetector import inference
 import matplotlib.pyplot as plt
+import time
+
+
 # create flask instance
 app = Flask(__name__)
 
@@ -25,7 +28,7 @@ def get_image_list():
 
         try:
             image_list = [img for img in list(os.listdir(os.path.join(os.path.dirname(__file__), 'static/images/')))
-                          if img[-4:] in ('.png', '.jpg', '.gif')]
+                          if img[-4:] in ('.png', '.jpg', '.jpeg', '.gif')]
 
             return jsonify(imgList=image_list)
 
@@ -33,7 +36,7 @@ def get_image_list():
             return jsonify({"sorry": "Sorry, no results! Please try again."}), 500
 
 
-# search route
+# search route and get similar images
 @app.route('/search', methods=['POST'])
 def search():
  
@@ -68,17 +71,26 @@ def search():
             # return error
             return jsonify({"sorry": "Sorry, no results! Please try again."}), 500
 
-
+# objectDetection route
 @app.route('/detectObjects', methods=['POST'])
 def object_detection():
     if request.method == 'POST':
         try:
             # Get image url
             image_id = str(request.form['image'])
+
             print(image_id)
-            predicted_image = predict(image_id)
-            plt.imsave('static/results/'+image_id.split('/')[-1], predicted_image)
-            return jsonify({"image": 'static/results/'+image_id.split('/')[-1]})
+
+            # detect objects
+            st = time.time()
+            output_image_path, output_image = inference.predict(image_id)
+            print('time: ', time.time()-st)
+            print(output_image_path)
+            plt.imsave(output_image_path, output_image)
+            
+            # time.sleep(0.25)
+
+            return jsonify({"image": output_image_path})
         except Exception as e:
             print(str(e))
             # return error
@@ -87,4 +99,4 @@ def object_detection():
 
 # run!
 if __name__ == '__main__':
-    app.run('0.0.0.0', debug=True)
+    app.run('0.0.0.0', port=8000, debug=True)
